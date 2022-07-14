@@ -8,10 +8,11 @@ namespace MassTweakSample
 		{
 			GameObjectScript = 0,
 			GameObjectManager,
-			GameObjectJobManager,
+			GameObjectJobSystem,
 			PureObjectDrawMesh,
 		}
 		public ShootMode mode;
+		public int JobBatchCount = 16;
 
 		public float fireCD = 0.05f;
 		public float fireRangeAngle = 60;
@@ -42,7 +43,7 @@ namespace MassTweakSample
 			_shootImpls = new IShoot[] {
 				new ShootWithGameObject(this),
 				new ShootWithGameObjectManager(this),
-				new ShootWithGameObjectJobManager(this),
+				new ShootWithGameObjectJobSystem(this),
 				null,
 			};
 		}

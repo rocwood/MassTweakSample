@@ -471,14 +471,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86203adf1e1311459522acdfe6f0c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: 0
+  mode: 2
+  JobBatchCount: 16
   fireCD: 0.02
   fireRangeAngle: 60
   fireBulletCount: 100
   bulletSpeed: 10
   bulletLifeTime: 2
-  bulletPrefab: {fileID: 476420707}
   bulletMaxCount: 10000
+  bulletPrefab: {fileID: 476420707}
 --- !u!4 &1164871109
 Transform:
   m_ObjectHideFlags: 0
