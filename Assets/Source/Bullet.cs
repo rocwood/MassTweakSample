@@ -1,19 +1,32 @@
 using UnityEngine;
 
-namespace Demo
+namespace MassTweakSample
 {
 	public class Bullet : MonoBehaviour
 	{
-		public float speed = 5;
-		public float lifeTime = 3;
-	
+		public struct BulletData
+		{
+			public float speed;
+			public float lifeTime;
+			public Vector3 dir;
+			public Vector3 position;
+			public Quaternion rotation;
+		}
+
+		public BulletData data;
+
 		void Update()
 		{
-			transform.Translate(transform.forward * speed * Time.deltaTime, Space.World);
+			data.position += data.dir * data.speed * Time.deltaTime;
+			transform.position = data.position; 
 
-			lifeTime -= Time.deltaTime;
-			if (lifeTime < 0)
+			data.lifeTime -= Time.deltaTime;
+			if (data.lifeTime < 0)
+			{
 				Destroy(gameObject);
+				
+				ShootWithGameObject.bulletCount--;
+			}
 		}
 	}
 }
