@@ -9,7 +9,7 @@ namespace MassTweakSample
 			GameObjectScript = 0,
 			GameObjectManager,
 			GameObjectJobSystem,
-			PureObjectDrawMesh,
+			PureObjectJobSystem,
 		}
 		public ShootMode mode;
 		public int JobBatchCount = 16;
@@ -44,7 +44,7 @@ namespace MassTweakSample
 				new ShootWithGameObject(this),
 				new ShootWithGameObjectManager(this),
 				new ShootWithGameObjectJobSystem(this),
-				null,
+				new ShootWithPureObjectJobSystem(this),
 			};
 		}
 
@@ -101,6 +101,7 @@ namespace MassTweakSample
 						speed = bulletSpeed,
 						lifeTime = bulletLifeTime,
 						position = transform.position,
+						rotation = rotation,
 						dir = rotation * Vector3.forward,
 					};
 
