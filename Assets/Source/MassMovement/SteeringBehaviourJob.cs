@@ -12,6 +12,8 @@ public partial class MassMovementManager
 		public NativeArray<UnitData> unitDataArray;
 		public NativeArray<float3> unitMoveArray;
 
+		public float spacing;
+
 		public void Execute(int i)
 		{
 			var unit = unitDataArray[i];
@@ -24,7 +26,12 @@ public partial class MassMovementManager
 			if (len > 0)
 				dir /= len;
 
-			// 计算单位之间的挤压
+			// 计算单位之间的挤压分离
+			var separation = float3.zero;
+			int neighbours = 0;
+
+			// 遍历单位列表
+			// TODO: 可用四叉树或网格优化
 			int count = unitDataArray.Length;
 			for (int j = 0; j < count; j++)
 			{
@@ -35,12 +42,20 @@ public partial class MassMovementManager
 				if (other.teamId <= 0)
 					continue;
 
-				// TODO
-
+				var xdir = unit.position - other.position;
+				var xlen = math.length(xdir);
+				if (xlen > 0 && xlen < unit.radius + other.radius + spacing)
+				{
+					separation += xdir / xlen;
+					neighbours++;
+				}
 			}
 
-			// 保存速度向量
-			unitMoveArray[i] = dir;
+			if (neighbours > 0)
+				separation /= neighbours;
+
+			// 保存合速度向量
+			unitMoveArray[i] = dir + separation;
 		}
 	}
 }

@@ -6,6 +6,7 @@ public struct UnitData
 
 	public float3 targetPos;
 	public float3 speed;
+	public float radius;
 	
 	public float3 position;
 }

@@ -13,6 +13,7 @@ public partial class MassMovementManager : MonoBehaviour
 	public int maxUnitCount = 10000;
 	public int unitCount;
 	public int jobBatchCount = 1;
+	public float spacing = 0.1f;
 
 	private GameObject[] unitList;
 	private NativeArray<UnitData> unitDataArray;
@@ -55,11 +56,8 @@ public partial class MassMovementManager : MonoBehaviour
 			var unit = Instantiate(team.prefab, pos, Quaternion.identity, this.transform);
 			unit.SetActive(true);
 
-			var unitData = new UnitData {
-				teamId = team.teamId,
-				targetPos = team.targetPos,
-				speed = team.speed,
-				position = pos,
+			var unitData = new UnitData { position = pos,
+				teamId = team.teamId, targetPos = team.targetPos, speed = team.speed, radius = team.radius,
 			};
 
 			// 加入单位列表
@@ -89,6 +87,7 @@ public partial class MassMovementManager : MonoBehaviour
 		var job1 = new SteeringBehaviourJob {
 			unitDataArray = unitDataArray,
 			unitMoveArray = unitMoveArray,
+			spacing = spacing,
 		};
 
 		var handle1 = job1.Schedule(unitCount, jobBatchCount);

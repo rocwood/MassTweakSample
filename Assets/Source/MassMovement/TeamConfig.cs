@@ -8,6 +8,7 @@ public struct TeamConfig
 
 	public GameObject prefab;
 	public float speed;
+	public float radius;
 
 	public int count;
 	public int createPerFrame;
