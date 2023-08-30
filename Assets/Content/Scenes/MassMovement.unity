@@ -157,8 +157,8 @@ MonoBehaviour:
     prefab: {fileID: 1907663387645746364}
     speed: 0.5
     radius: 0.1
-    count: 1000
-    createPerFrame: 2
+    count: 2500
+    createPerFrame: 5
     startPos: {x: -8, y: 0, z: 0}
     startRange: 2
     targetPos: {x: 8, y: 0, z: 0}
@@ -167,8 +167,8 @@ MonoBehaviour:
     prefab: {fileID: 294775062}
     speed: 0.5
     radius: 0.1
-    count: 1000
-    createPerFrame: 2
+    count: 2500
+    createPerFrame: 5
     startPos: {x: 8, y: 0, z: 0}
     startRange: 2
     targetPos: {x: -8, y: 0, z: 0}
