@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 225500176}
   - component: {fileID: 225500175}
   m_Layer: 0
-  m_Name: Manager
+  m_Name: World
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -203,7 +203,7 @@ MonoBehaviour:
     startPosRandomRange: 2
   - baseData:
       teamId: 1
-      radius: 2
+      radius: 1.5
       speed: 0
       position:
         x: -8
@@ -227,7 +227,7 @@ MonoBehaviour:
     startPosRandomRange: 0
   - baseData:
       teamId: 2
-      radius: 2
+      radius: 1.5
       speed: 0
       position:
         x: 8
@@ -250,7 +250,6 @@ MonoBehaviour:
     createPerFrame: 1
     startPosRandomRange: 0
   maxUnitCount: 10000
-  unitCount: 0
   jobBatchCount: 1
   spacing: 0.05
 --- !u!4 &225500176
