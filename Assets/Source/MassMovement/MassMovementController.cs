@@ -41,14 +41,16 @@ public class MassMovementController : MonoBehaviour
 			var dispObj = Instantiate(team.prefab, pos, team.prefab.transform.rotation, this.transform);
 			dispObj.SetActive(true);
 
-			var baseData = team.baseData;
-			baseData.position = pos;
-			baseData.targetPos = team.baseData.targetPos;
+			var unit = team.baseData;
+			unit.position = pos;
+			unit.targetPos = team.baseData.targetPos;
 
-			var combatData = team.combatData;
+			var combat = team.combatData;
+			combat.hp = combat.hpMax;
+			combat.target = -1;
 
 			// 加入单位列表
-			world.AddUnit(baseData, combatData, dispObj);
+			world.AddUnit(unit, combat, dispObj);
 
 			// 分帧,等下一帧继续创建
 			if (team.createPerFrame > 0 &&
@@ -69,8 +71,8 @@ public class MassMovementController : MonoBehaviour
 			return;
 
 		// 计算速度向量
-		var job1 = new SteeringBehaviourJob {
-			unitDataArray = world.unitBaseDataArray,
+		var job1 = new SteeringJob {
+			unitBaseArray = world.unitBaseDataArray,
 			unitMoveArray = world.unitMoveArray,
 			spacing = spacing,
 		};
@@ -79,7 +81,7 @@ public class MassMovementController : MonoBehaviour
 
 		// 执行位移计算
 		var job2 = new MovementJob {
-			unitDataArray = world.unitBaseDataArray,
+			unitBaseArray = world.unitBaseDataArray,
 			unitMoveArray = world.unitMoveArray,
 			dt = Time.deltaTime,
 		};

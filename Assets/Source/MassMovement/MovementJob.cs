@@ -6,7 +6,7 @@ using UnityEngine.Jobs;
 [BurstCompile]
 struct MovementJob : IJobParallelForTransform
 {
-	public NativeArray<UnitBaseData> unitDataArray;
+	public NativeArray<UnitBaseData> unitBaseArray;
 
 	[ReadOnly]
 	public NativeArray<float3> unitMoveArray;
@@ -14,7 +14,7 @@ struct MovementJob : IJobParallelForTransform
 
 	public void Execute(int i, TransformAccess transform)
 	{
-		var unit = unitDataArray[i];
+		var unit = unitBaseArray[i];
 		if (unit.teamId <= 0)
 			return;
 
@@ -23,7 +23,7 @@ struct MovementJob : IJobParallelForTransform
 		unit.position += dir * unit.speed * dt;
 
 		// 保存最新位置
-		unitDataArray[i] = unit;
+		unitBaseArray[i] = unit;
 
 		transform.position = unit.position;
 	}

@@ -4,17 +4,17 @@ using Unity.Jobs;
 using Unity.Mathematics;
 
 [BurstCompile]
-struct SteeringBehaviourJob : IJobParallelFor
+struct SteeringJob : IJobParallelFor
 {
 	[ReadOnly]
-	public NativeArray<UnitBaseData> unitDataArray;
+	public NativeArray<UnitBaseData> unitBaseArray;
 	public NativeArray<float3> unitMoveArray;
 
 	public float spacing;
 
 	public void Execute(int i)
 	{
-		var unit = unitDataArray[i];
+		var unit = unitBaseArray[i];
 		if (unit.teamId <= 0)
 			return;
 
@@ -30,13 +30,13 @@ struct SteeringBehaviourJob : IJobParallelFor
 
 		// 遍历单位列表
 		// TODO: 可用四叉树或网格优化
-		int count = unitDataArray.Length;
+		int count = unitBaseArray.Length;
 		for (int j = 0; j < count; j++)
 		{
 			if (i == j)
 				continue;
 
-			var other = unitDataArray[j];
+			var other = unitBaseArray[j];
 			if (other.teamId <= 0)
 				continue;
 
@@ -50,9 +50,14 @@ struct SteeringBehaviourJob : IJobParallelFor
 		}
 
 		if (neighbours > 0)
-			separation /= neighbours;
+		{
+			// 计算合速度向量，限制最大值
+			dir += separation / neighbours;
+			len = math.length(dir);
+			if (len > 1)
+				dir /= len;
+		}
 
-		// 保存合速度向量
-		unitMoveArray[i] = dir + separation;
+		unitMoveArray[i] = dir;
 	}
 }
