@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -7,8 +8,7 @@ using UnityEngine.Jobs;
 
 public partial class MassMovementManager : MonoBehaviour
 {
-	public TeamConfig redTeam;
-	public TeamConfig blueTeam;
+	public List<TeamConfig> teamList = new List<TeamConfig>();
 
 	public int maxUnitCount = 10000;
 	public int unitCount;
@@ -16,53 +16,48 @@ public partial class MassMovementManager : MonoBehaviour
 	public float spacing = 0.1f;
 
 	private GameObject[] unitList;
-	private NativeArray<UnitData> unitDataArray;
+	private NativeArray<UnitBaseData> unitDataArray;
 	private NativeArray<float3> unitMoveArray;
 	private TransformAccessArray unitTransformArray;
 
-	IEnumerator Start()
+	void Start()
 	{
-		maxUnitCount = redTeam.count + blueTeam.count;
-
 		unitList = new GameObject[maxUnitCount];
-		unitDataArray = new NativeArray<UnitData>(maxUnitCount, Allocator.Persistent);
+		unitDataArray = new NativeArray<UnitBaseData>(maxUnitCount, Allocator.Persistent);
 		unitMoveArray = new NativeArray<float3>(maxUnitCount, Allocator.Persistent);
 		unitTransformArray = new TransformAccessArray(maxUnitCount);
 
-		// 创建两个队伍方阵
-		var c1 = StartCoroutine(CreateTeam(redTeam));
-		var c2 = StartCoroutine(CreateTeam(blueTeam));
-
-		yield return c1;
-		yield return c2;
+		// 创建队伍方阵
+		for (int i = 0; i < teamList.Count; i++)
+			StartCoroutine(CreateTeam(teamList[i]));
 	}
 
 	IEnumerator CreateTeam(TeamConfig team)
 	{
-		for (int i = 0; i < team.count; i++)
+		for (int i = 0; i < team.totalCount; i++)
 		{
 			if (unitCount >= maxUnitCount)
 				yield break;
 
 			// 随机方阵位置
-			var pos = team.startPos;
-			if (team.startRange > 0)
+			var pos = team.baseData.position;
+			if (team.startPosRandomRange > 0)
 			{
-				pos.x += UnityEngine.Random.Range(-team.startRange, team.startRange);
-				pos.z += UnityEngine.Random.Range(-team.startRange, team.startRange);
+				pos.x += UnityEngine.Random.Range(-team.startPosRandomRange, team.startPosRandomRange);
+				pos.z += UnityEngine.Random.Range(-team.startPosRandomRange, team.startPosRandomRange);
 			}
 
 			// 创建单位
-			var unit = Instantiate(team.prefab, pos, Quaternion.identity, this.transform);
+			var unit = Instantiate(team.prefab, pos, team.prefab.transform.rotation, this.transform);
 			unit.SetActive(true);
 
-			var unitData = new UnitData { position = pos,
-				teamId = team.teamId, targetPos = team.targetPos, speed = team.speed, radius = team.radius,
-			};
+			var baseData = team.baseData;
+			baseData.position = pos;
+			baseData.targetPos = team.baseData.targetPos;
 
 			// 加入单位列表
 			unitList[unitCount] = unit;
-			unitDataArray[unitCount] = unitData;
+			unitDataArray[unitCount] = baseData;
 			unitTransformArray.Add(unit.transform);
 			unitCount++;
 

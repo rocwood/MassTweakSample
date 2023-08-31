@@ -152,26 +152,103 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38799837bf9d2e4418ff24fc5b454ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redTeam:
-    teamId: 1
+  teamList:
+  - baseData:
+      teamId: 1
+      radius: 0.1
+      speed: 0.5
+      position:
+        x: -8
+        y: 0
+        z: 0
+      targetPos:
+        x: 8
+        y: 0
+        z: 0
+    combatData:
+      attack: 0
+      range: 0
+      cooldown: 0
+      target: 0
+      timer: 0
+      hp: 0
+      hpMax: 0
     prefab: {fileID: 1907663387645746364}
-    speed: 0.5
-    radius: 0.1
-    count: 2500
+    totalCount: 2500
     createPerFrame: 5
-    startPos: {x: -8, y: 0, z: 0}
-    startRange: 2
-    targetPos: {x: 8, y: 0, z: 0}
-  blueTeam:
-    teamId: 2
+    startPosRandomRange: 2
+  - baseData:
+      teamId: 2
+      radius: 0.1
+      speed: 0.5
+      position:
+        x: 8
+        y: 0
+        z: 0
+      targetPos:
+        x: -8
+        y: 0
+        z: 0
+    combatData:
+      attack: 0
+      range: 0
+      cooldown: 0
+      target: 0
+      timer: 0
+      hp: 0
+      hpMax: 0
     prefab: {fileID: 294775062}
-    speed: 0.5
-    radius: 0.1
-    count: 2500
+    totalCount: 2500
     createPerFrame: 5
-    startPos: {x: 8, y: 0, z: 0}
-    startRange: 2
-    targetPos: {x: -8, y: 0, z: 0}
+    startPosRandomRange: 2
+  - baseData:
+      teamId: 1
+      radius: 2
+      speed: 0
+      position:
+        x: -8
+        y: 0
+        z: 0
+      targetPos:
+        x: -8
+        y: 0
+        z: 0
+    combatData:
+      attack: 0
+      range: 0
+      cooldown: 0
+      target: 0
+      timer: 0
+      hp: 0
+      hpMax: 0
+    prefab: {fileID: 919132147602537628}
+    totalCount: 1
+    createPerFrame: 1
+    startPosRandomRange: 0
+  - baseData:
+      teamId: 2
+      radius: 2
+      speed: 0
+      position:
+        x: 8
+        y: 0
+        z: 0
+      targetPos:
+        x: 8
+        y: 0
+        z: 0
+    combatData:
+      attack: 0
+      range: 0
+      cooldown: 0
+      target: 0
+      timer: 0
+      hp: 0
+      hpMax: 0
+    prefab: {fileID: 919132148852742836}
+    totalCount: 1
+    createPerFrame: 1
+    startPosRandomRange: 0
   maxUnitCount: 10000
   unitCount: 0
   jobBatchCount: 1
@@ -558,7 +635,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &919132148852742836
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +653,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1711813855083109705
 MeshRenderer:
   m_ObjectHideFlags: 0

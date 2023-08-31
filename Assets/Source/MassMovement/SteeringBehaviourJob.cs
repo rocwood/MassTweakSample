@@ -9,7 +9,7 @@ public partial class MassMovementManager
 	struct SteeringBehaviourJob : IJobParallelFor
 	{
 		[ReadOnly]
-		public NativeArray<UnitData> unitDataArray;
+		public NativeArray<UnitBaseData> unitDataArray;
 		public NativeArray<float3> unitMoveArray;
 
 		public float spacing;

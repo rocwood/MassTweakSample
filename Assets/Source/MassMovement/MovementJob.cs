@@ -8,7 +8,7 @@ public partial class MassMovementManager
 	[BurstCompile]
 	struct MovementJob : IJobParallelForTransform
 	{
-		public NativeArray<UnitData> unitDataArray;
+		public NativeArray<UnitBaseData> unitDataArray;
 
 		[ReadOnly]
 		public NativeArray<float3> unitMoveArray;

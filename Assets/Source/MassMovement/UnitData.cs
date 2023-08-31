@@ -1,12 +1,27 @@
+using System;
 using Unity.Mathematics;
 
-public struct UnitData
+[Serializable]
+public struct UnitBaseData
 {
 	public int teamId;
-
-	public float3 targetPos;
-	public float3 speed;
 	public float radius;
-	
+	public float speed;
+
 	public float3 position;
+	public float3 targetPos;
+}
+
+[Serializable]
+public struct UnitCombatData
+{
+	public float attack;
+	public float range;
+	public float cooldown;
+
+	public int target;
+	public float timer;
+
+	public float hp;
+	public float hpMax;
 }

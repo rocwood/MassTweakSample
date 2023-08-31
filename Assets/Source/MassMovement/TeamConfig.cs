@@ -4,17 +4,12 @@ using UnityEngine;
 [Serializable]
 public struct TeamConfig
 {
-	public int teamId;
+	public UnitBaseData baseData;
+	public UnitCombatData combatData;
 
 	public GameObject prefab;
-	public float speed;
-	public float radius;
 
-	public int count;
-	public int createPerFrame;
-
-	public Vector3 startPos;
-	public float startRange;
-
-	public Vector3 targetPos;
+	public int totalCount;
+	public int createPerFrame;			// 每帧至多创建多少个单位
+	public float startPosRandomRange;	// 初始随机范围
 }
