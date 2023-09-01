@@ -6,10 +6,11 @@ using Unity.Mathematics;
 [BurstCompile]
 struct SteeringJob : IJobParallelFor
 {
-	[ReadOnly]
-	public NativeArray<UnitBaseData> unitBaseArray;
-	public NativeArray<float3> unitMoveArray;
+	[ReadOnly] public NativeArray<UnitBaseData> unitBaseArray;
+	[ReadOnly] public NativeArray<UnitCombatData> unitCombatArray;
+	[WriteOnly] public NativeArray<float3> unitMoveArray;
 
+	public int unitCount;
 	public float spacing;
 
 	public void Execute(int i)
@@ -17,6 +18,13 @@ struct SteeringJob : IJobParallelFor
 		var unit = unitBaseArray[i];
 		if (unit.teamId <= 0)
 			return;
+
+		// 如果是攻击中则直接停止
+		if (unitCombatArray[i].target >= 0)
+		{
+			unitMoveArray[i] = default;
+			return;
+		}
 
 		// 朝向目标点移动
 		var dir = unit.targetPos - unit.position;
@@ -30,8 +38,7 @@ struct SteeringJob : IJobParallelFor
 
 		// 遍历单位列表
 		// TODO: 可用四叉树或网格优化
-		int count = unitBaseArray.Length;
-		for (int j = 0; j < count; j++)
+		for (int j = 0; j < unitCount; j++)
 		{
 			if (i == j)
 				continue;

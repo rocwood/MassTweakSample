@@ -46,7 +46,6 @@ public class MassMovementController : MonoBehaviour
 			unit.targetPos = team.baseData.targetPos;
 
 			var combat = team.combatData;
-			combat.hp = combat.hpMax;
 			combat.target = -1;
 
 			// 加入单位列表
@@ -70,23 +69,68 @@ public class MassMovementController : MonoBehaviour
 		if (world == null)
 			return;
 
+		var dt = Time.deltaTime;
+
+		// 攻击目标选择
+		new PickTargetJob {
+			unitCount = world.unitCount,
+			unitBaseArray = world.unitBaseArray,
+			unitHealthArray = world.unitHealthArray,
+			unitCombatArray = world.unitCombatArray,
+			unitAttackArray = world.unitAttackArray,
+			dt = dt,
+		}
+		.Schedule(world.unitCount, jobBatchCount)
+		.Complete();
+
+		// 攻击
+		new AttackJob {
+			unitCount = world.unitCount,
+			unitBaseArray = world.unitBaseArray,
+			unitCombatArray = world.unitCombatArray,
+			unitAttackArray = world.unitAttackArray,
+			unitHealthArray = world.unitHealthArray,
+		}
+		.Schedule(world.unitCount, jobBatchCount)
+		.Complete();
+
+		// 回收死亡单位
+		for (int i = 0; i < world.unitCount; i++)
+		{
+			var unit = world.unitBaseArray[i];
+			if (unit.teamId <= 0)
+				continue;
+
+			if (world.unitHealthArray[i] <= 0)
+				world.RemoveUnit(i);
+		}
+	}
+
+	private void LateUpdate()
+	{
+		if (world == null)
+			return;
+
+		var dt = Time.deltaTime;
+
 		// 计算速度向量
-		var job1 = new SteeringJob {
-			unitBaseArray = world.unitBaseDataArray,
+		new SteeringJob {
+			unitCount = world.unitCount,
+			unitBaseArray = world.unitBaseArray,
+			unitCombatArray = world.unitCombatArray,
 			unitMoveArray = world.unitMoveArray,
 			spacing = spacing,
-		};
-
-		var handle1 = job1.Schedule(world.unitCount, jobBatchCount);
+		}
+		.Schedule(world.unitCount, jobBatchCount)
+		.Complete();
 
 		// 执行位移计算
-		var job2 = new MovementJob {
-			unitBaseArray = world.unitBaseDataArray,
+		new MovementJob {
+			unitBaseArray = world.unitBaseArray,
 			unitMoveArray = world.unitMoveArray,
-			dt = Time.deltaTime,
-		};
-
-		var handle2 = job2.Schedule(world.unitTransformArray, handle1); // 依赖job1
-		handle2.Complete();
+			dt = dt,
+		}
+		.Schedule(world.unitTransformArray)
+		.Complete();
 	}
 }

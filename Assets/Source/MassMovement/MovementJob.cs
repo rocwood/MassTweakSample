@@ -6,10 +6,10 @@ using UnityEngine.Jobs;
 [BurstCompile]
 struct MovementJob : IJobParallelForTransform
 {
+	[ReadOnly] public NativeArray<float3> unitMoveArray;
+
 	public NativeArray<UnitBaseData> unitBaseArray;
 
-	[ReadOnly]
-	public NativeArray<float3> unitMoveArray;
 	public float dt;
 
 	public void Execute(int i, TransformAccess transform)

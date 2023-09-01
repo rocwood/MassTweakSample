@@ -166,13 +166,12 @@ MonoBehaviour:
         y: 0
         z: 0
     combatData:
-      attack: 0
-      range: 0
-      cooldown: 0
-      target: 0
+      attack: 1
+      range: 0.1
+      cooldown: 1
+      hpMax: 3
+      target: -1
       timer: 0
-      hp: 0
-      hpMax: 0
     prefab: {fileID: 1907663387645746364}
     totalCount: 2500
     createPerFrame: 5
@@ -190,13 +189,12 @@ MonoBehaviour:
         y: 0
         z: 0
     combatData:
-      attack: 0
-      range: 0
-      cooldown: 0
-      target: 0
+      attack: 1
+      range: 0.1
+      cooldown: 1
+      hpMax: 3
+      target: -1
       timer: 0
-      hp: 0
-      hpMax: 0
     prefab: {fileID: 294775062}
     totalCount: 2500
     createPerFrame: 5
@@ -217,10 +215,9 @@ MonoBehaviour:
       attack: 0
       range: 0
       cooldown: 0
+      hpMax: 1000
       target: 0
       timer: 0
-      hp: 0
-      hpMax: 0
     prefab: {fileID: 919132147602537628}
     totalCount: 1
     createPerFrame: 1
@@ -241,10 +238,9 @@ MonoBehaviour:
       attack: 0
       range: 0
       cooldown: 0
+      hpMax: 1000
       target: 0
       timer: 0
-      hp: 0
-      hpMax: 0
     prefab: {fileID: 919132148852742836}
     totalCount: 1
     createPerFrame: 1

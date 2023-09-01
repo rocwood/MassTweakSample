@@ -9,9 +9,12 @@ public class UnitWorld
 	public int maxUnitCount { get; private set; }
 
 	public GameObject[] unitList;
-	public NativeArray<UnitBaseData> unitBaseDataArray;
-	public NativeArray<UnitCombatData> unitCombatDataArray;
+	public NativeArray<UnitBaseData> unitBaseArray;
+	public NativeArray<UnitCombatData> unitCombatArray;
+	public NativeArray<float> unitHealthArray;
+
 	public NativeArray<float3> unitMoveArray;
+	public NativeArray<int> unitAttackArray;
 	public TransformAccessArray unitTransformArray;
 
 	public UnitWorld(int maxUnitCount)
@@ -19,24 +22,28 @@ public class UnitWorld
 		this.maxUnitCount = maxUnitCount;
 
 		unitList = new GameObject[maxUnitCount];
-		unitBaseDataArray = new NativeArray<UnitBaseData>(maxUnitCount, Allocator.Persistent);
-		unitCombatDataArray = new NativeArray<UnitCombatData>(maxUnitCount, Allocator.Persistent);
+		unitBaseArray = new NativeArray<UnitBaseData>(maxUnitCount, Allocator.Persistent);
+		unitCombatArray = new NativeArray<UnitCombatData>(maxUnitCount, Allocator.Persistent);
+		unitHealthArray = new NativeArray<float>(maxUnitCount, Allocator.Persistent);
 		unitMoveArray = new NativeArray<float3>(maxUnitCount, Allocator.Persistent);
+		unitAttackArray = new NativeArray<int>(maxUnitCount, Allocator.Persistent);
 		unitTransformArray = new TransformAccessArray(maxUnitCount);
 	}
 
 	public void Dispose()
 	{
 		unitList = null;
-		unitBaseDataArray.Dispose();
-		unitCombatDataArray.Dispose();
+		unitBaseArray.Dispose();
+		unitCombatArray.Dispose();
+		unitHealthArray.Dispose();
 		unitMoveArray.Dispose();
+		unitAttackArray.Dispose();
 		unitTransformArray.Dispose();
 	}
 
 	public bool IsFull() => unitCount >= maxUnitCount;
 
-	public int AddUnit(UnitBaseData baseData, UnitCombatData combatData, GameObject dispObj)
+	public int AddUnit(in UnitBaseData baseData, in UnitCombatData combatData, GameObject dispObj)
 	{
 		if (dispObj == null)
 			return -1;
@@ -48,8 +55,12 @@ public class UnitWorld
 		unitCount++;
 
 		unitList[index] = dispObj;
-		unitBaseDataArray[index] = baseData;
-		unitCombatDataArray[index] = combatData;
+		unitBaseArray[index] = baseData;
+		unitCombatArray[index] = combatData;
+		unitMoveArray[index] = default;
+		unitAttackArray[index] = -1;
+		unitHealthArray[index] = combatData.hpMax;
+
 		unitTransformArray.Add(dispObj.transform);
 	
 		return index;
@@ -57,6 +68,13 @@ public class UnitWorld
 
 	public void RemoveUnit(int index)
 	{
-		// TODO
+		if (index >= unitCount || index >= maxUnitCount)
+			return;
+
+		// 不减少unitCount，也不移动位置，只标记为无效
+		unitBaseArray[index] = default;
+
+		GameObject.Destroy(unitList[index]);
+		unitList[index] = null;
 	}
 }

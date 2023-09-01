@@ -18,10 +18,8 @@ public struct UnitCombatData
 	public float attack;
 	public float range;
 	public float cooldown;
+	public float hpMax;
 
 	public int target;
 	public float timer;
-
-	public float hp;
-	public float hpMax;
 }
