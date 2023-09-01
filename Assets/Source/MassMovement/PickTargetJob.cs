@@ -20,11 +20,11 @@ struct PickTargetJob : IJobParallelFor
 		if (unit.teamId <= 0)
 			return;
 
-		if (unitHealthArray[i] <= 0)
-			return;
-
 		var combat = unitCombatArray[i];
 		if (combat.attack <= 0 || combat.range < 0)
+			return;
+
+		if (unitHealthArray[i] <= 0)
 			return;
 
 		// 检查冷却时间

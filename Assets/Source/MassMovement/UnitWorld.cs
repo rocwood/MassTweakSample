@@ -13,8 +13,8 @@ public class UnitWorld
 	public NativeArray<UnitCombatData> unitCombatArray;
 	public NativeArray<float> unitHealthArray;
 
-	public NativeArray<float3> unitMoveArray;
-	public NativeArray<int> unitAttackArray;
+	public NativeArray<float3> unitMoveArray;	// 当前帧的运动方向计算结果
+	public NativeArray<int> unitAttackArray;	// 当前帧攻击目标的计算结果
 	public TransformAccessArray unitTransformArray;
 
 	public UnitWorld(int maxUnitCount)
